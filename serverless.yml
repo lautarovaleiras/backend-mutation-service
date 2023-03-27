@@ -1,0 +1,98 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: check-dna-app-sls
+# app and org for use with dashboard.serverless.com
+app: sls-app
+#org: your-org-name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+# you can overwrite defaults here
+  stage:  ${opt:stage, 'dev'}
+  region: us-east-1
+  profile: serverless
+# Roles for dynamoDb 
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+      Resource:
+        - "arn:aws:dynamodb:us-east-1:218749871770:table/DnaDynamoDbTable"
+  
+  environment:
+    ENVIRONMENT: ${opt:stage, 'dev'}
+
+
+functions:
+  mutationApi:
+    handler: src/lambdas/mutationApi/app.handler
+#    The following are a few example events you can configure
+#    NOTE: Please make sure to change your handler code to work with those events
+#    Check the event documentation for details
+    events:
+     - http: 
+        path: /mutation
+        method: post
+        RestApiId: !Ref Api
+     - http:
+        path: /stats
+        method: get
+        RestApiId: !Ref Api
+# resources:
+#   Api:
+#     Type: AWS::Serverless::Api
+#     Properties:
+#       Name: Serverless-Framework
+#       StageName: dev
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-plugin-typescript
+  - serverless-offline
+custom:
+  serverless-offline:
+    port: 4000
+  dynamodb:
+    stages:
+      - local
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+
+# you can add CloudFormation resource templates here
+resources:
+  Resources:
+    DnaDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          -
+            AttributeName: "sequence"
+            AttributeType: "S"   
+        KeySchema:
+          -
+            AttributeName: "sequence"
+            KeyType: "HASH"
+        TableName: 'DnaDynamoDbTable'

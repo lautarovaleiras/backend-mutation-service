@@ -1,0 +1,38 @@
+{
+  "name": "backend-mutation-service",
+  "version": "1.0.0",
+  "description": "service for process dna mutations",
+  "main": "app.js",
+  "scripts": {
+    "build": "serverless package",
+    "api-start-dev": "serverless offline -s dev",
+    "api-start-local": "sls offline start --stage local",
+    "deploy-dev": "serverless deploy",
+    "local-dynamo": "sls dynamodb install --stage local",
+    "test": "tsc && ts-mocha --recursive test/**/*.spec.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "gitlab.com"
+  },
+  "author": "lautaro valeiras",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.1",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "serverless": "^1.80.0",
+    "serverless-offline": "^6.6.0",
+    "serverless-plugin-typescript": "^1.1.9",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1327.0",
+    "dynamodb-toolbox": "^0.7.0",
+    "lambda-api": "^0.10.6",
+    "serverless-dynamodb-local": "^0.2.40"
+  }
+}

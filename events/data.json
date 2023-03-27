@@ -1,0 +1,6 @@
+{
+    "resource": "/",
+    "path": "/hello",
+    "httpMethod": "GET"
+    
+  }

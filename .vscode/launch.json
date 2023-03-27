@@ -1,0 +1,59 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Launch Serverless Offline",
+        "program": "${workspaceRoot}/node_modules/serverless/bin/serverless",
+        "args": [
+          "offline",
+          "--noTimeout",
+          "--dontPrintOutput",
+          "--stage=local",
+          "-P",
+          "4000",
+        ],
+        "sourceMaps": true,
+        "runtimeArgs": ["--lazy"],
+        "outFiles": ["${workspaceFolder}/.build/src/lambdas/mutationApi/*.js"],
+        "protocol": "inspector",
+        "runtimeExecutable": "node",
+        "env": {
+          // Here we set some environment vars that should be set locally.
+          // They can and will overwrite the ones coming from your serverless.yml
+        },
+        "windows": {
+          "program": "${workspaceRoot}\\node_modules\\serverless\\bin\\serverless"
+        }
+      },
+      {
+          "type": "node",
+          "request": "launch",
+          "name":"debug with serverless",
+          "program": "${workspaceRoot}/node_modules/serverless/bin/serverless",
+          "args": [
+              "invoke",
+              "local",
+              "-f",
+              "hello",
+              "--path",
+              "events/data.json"
+          ]
+      },
+      {
+        "type": "node",
+        "args": [
+            "-r",
+            "ts-node/register"
+        ],
+        "request": "launch",
+        "name": "Run File TS",
+        "program": "${file}"
+    },
+      
+    ]
+  }
